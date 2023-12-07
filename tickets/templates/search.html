@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="container col-6 p-3" style="text-align: left !important;">
+        <form method="POST" class="form-control d-flex align-items-center">
+            {{ form.hidden_tag() }}
+            {{ form.search(class="form-control mx-1", placeholder="Search using genre/venue/title", style="background-color: #d4af37")}}
+            {{ form.submit(class="btn text-white", style="background-color: #0C2340") }}
+        </form>
+    </div>
+    <div class="container col-8 br-12 rounded align-items-center d-flex flex-column flex-wrap">
+        {% if not shows and not showbyGenre and not venues %}
+        <p class="text-white">No results found.</p>
+        {% endif %}
+        {% if shows and not showbyGenre and not venues %}
+        {% for sho in shows %}
+        <div class="card mb-3 mt-3 mx-3 d-flex justify-content-center align-items-center" style="max-width: 580px; background-color:#d4af37">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src={{ sho.img_url }} class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sho.show_name }}</h5>
+                        <p class="card-subtitle">{{ sho.show_timings }}</p>
+                        <p class="card-text"><small class="text-body-secondary"><span class="badge text-bg-secondary mx-1">{{ sho.category }}</span><span class="badge text-bg-secondary mx-1">{{ sho.lang }}</span></small></p>
+                        <p class="card-text m-0 p-0">IMDb: {{ sho.rating }}/10</p>
+                        <p class="card-text m-0 p-0">Price: {{ sho.ticket_rate }}</p>
+                        {% if sho.no_of_seats == '0' %}
+                            <p class="card-text m-0 p-0">House Full!!!</p>
+                        {% else %}
+                            <p class="card-text m-0 p-0">Remaining: {{ sho.no_of_seats }}</p>
+                        {% endif %}
+                        <div class="bottom-0 my-2 mx-4 mt-2">
+                            {% if sho.no_of_seats == '0' %}
+                                <a href="" class="btn btn-secondary my-1 disabled">Book Tickets</a>
+                            {% else %}
+                                {% if not current_user.is_admin %} <a href={{url_for('book_tickets_page',showid=sho.id)}} class="btn btn-success my-1">Book Tickets</a> {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            {% endfor %}
+        {% endif %}
+        {% if showbyGenre and not venues and not shows %}
+        {% for sho in showbyGenre %}
+        <div class="card mb-3 mt-3 mx-3 d-flex justify-content-center align-items-center" style="max-width: 580px; background-color:#d4af37">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src={{ sho.img_url }} class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sho.show_name }}</h5>
+                        <p class="card-subtitle">{{ sho.show_timings }}</p>
+                        <p class="card-text"><small class="text-body-secondary"><span class="badge text-bg-secondary mx-1">{{ sho.category }}</span><span class="badge text-bg-secondary mx-1">{{ sho.lang }}</span></small></p>
+                        <p class="card-text m-0 p-0">IMDb: {{ sho.rating }}/10</p>
+                        <p class="card-text m-0 p-0">Price: {{ sho.ticket_rate }}</p>
+                        {% if sho.no_of_seats == '0' %}
+                            <p class="card-text m-0 p-0">House Full!!!</p>
+                        {% else %}
+                            <p class="card-text m-0 p-0">Remaining: {{ sho.no_of_seats }}</p>
+                        {% endif %}
+                        <div class="bottom-0 my-2 mx-4 mt-2">
+                            {% if not current_user.is_admin %}
+                                {% if sho.no_of_seats == '0' %}
+                                    <a href="" class="btn btn-secondary my-1 disabled">Book Tickets</a>
+                                {% else %}
+                                    <a href={{url_for('book_tickets_page',showid=sho.id)}} class="btn btn-success my-1">Book Tickets</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if venues and not showbyGenre and not shows %}
+            {% for venue in venues %}
+                <div class="card col-3 align-items-center justify-content-center text-center mx-1 my-1"
+                    style="height: 200px; text-decoration: none !important;cursor: pointer; background-color: #d4af37">
+                    <h4 class="card-title">{{ venue.venue_name }}</h4>
+                    <h6 class="card-subtitle">{{ venue.venue_address }}</h6>
+                    <a href={{url_for('venue_page', name=venue.venue_name, id=venue.id)}} class="btn mt-4 text-white" style="background-color: #0C2340">View Current
+                        Show</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

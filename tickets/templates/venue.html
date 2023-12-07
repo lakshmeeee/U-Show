@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Venue: {{venue.venue_name}}
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center text-white mt-3">
+    <h2>Venue Details : {{venue.venue_name}}</h2>
+</div>
+<div class="container col-8 br-12 rounded align-items-center justify-content-center d-flex flex-column flex-wrap mb-2" style="color: white;">
+    {% if current_user.is_admin %}
+        <a href={{url_for('add_show_page',name=venue.venue_name, id=venue.id)}} class="mb-3 mx-3 my-3 card col-3 align-items-center justify-content-center d-flex mx-1"
+            style="height: 200px; text-decoration: none !important; cursor: pointer; background-color: #d4af37;">
+            <i class="fas fa-circle-plus"></i>
+            Add Show
+        </a>
+    {% endif %}
+    {% if not show %}
+        <p class="text-white">No current shows</p>
+    {% else %}
+        {% for sho in show%}
+            <div class="card mb-3 mt-3 mx-3" style="max-width: 580px; background-color:#d4af37">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src={{ sho[0].img_url }} class="img-fluid rounded-start" alt="poster">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ sho[0].show_name }}</h5>
+                            <p class="card-subtitle">{{ sho[0].show_timings }}</p>
+                            <p class="card-text">
+                                <small class="text-body-secondary">
+                                    <span class="badge text-bg-secondary text-dark mx-1">{{ sho[0].category }}</span>
+                                    <span class="badge text-bg-secondary text-dark mx-1">{{ sho[0].lang }}</span>
+                                    {% for genre in sho[1] %}
+                                        <span class="badge mx-1 text-white" style="background-color: #0C2340">{{ genre.genre }}</span>
+                                    {% endfor %}
+                                </small>
+                            </p>
+                            <p class="card-text m-0 p-0">IMDb: {{ sho[0].rating }}/10</p>
+                            <p class="card-text m-0 p-0">Price: {{ sho[0].ticket_rate }}</p>
+                            {% if sho.no_of_seats == '0' %}
+                                <p class="card-text m-0 p-0">House Full!!!</p>
+                            {% else %}
+                                <p class="card-text m-0 p-0">Remaining: {{ sho[0].no_of_seats }}</p>
+                            {% endif %}
+                            <div class=" position-absolute bottom-0 my-2">
+                                {% if not current_user.is_admin %} <a href={{url_for('add_review_page', showid=sho[0].id)}} class="btn my-1 text-white" style="background-color: #0C2340">Add Review</a> {% endif %}
+                                <a href={{url_for('see_review_page', showid=sho[0].id)}} class="btn text-white my-1" style="background-color: #0C2340">See Review</a>
+                                {% if sho.no_of_seats == '0' %}
+                                    <a href="" class="btn btn-secondary my-1 disabled">Book Tickets</a>
+                                {% else %}
+                                    {% if not current_user.is_admin %} <a href={{url_for('book_tickets_page',showid=sho[0].id)}} class="btn btn-success my-1">Book Tickets</a> {% endif %}
+                                {% endif %}
+                                {% if current_user.is_admin %}
+                                    <a href={{url_for('update_show_page',name=venue.venue_name,id1=venue.id,id2=sho[0].id)}} class="btn my-1 text-white" style="background-color: #0C2340;">Update</a>
+                                    <a href={{url_for('delete_show_page',name=venue.venue_name,id1=venue.id,id2=sho[0].id)}} class="btn btn-danger my-1">Delete</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% if current_user.is_admin %}
+<div class="d-flex align-items-center justify-content-center my-2" style="padding-bottom: 50px;">
+    <a href={{url_for('delete_venue_page',id=venue.id)}} class="btn btn-danger mx-2">Delete Venue</a>
+    <a href={{url_for('update_venue_page',id=venue.id)}} class="btn mx-2" style="background-color: #0dcaf0; color:#0C2340">Update Venue Details</a>
+</div>
+{% endif %}
+
+{% endblock %}

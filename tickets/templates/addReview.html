@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Review
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+    <div class="text-center text-white mt-3"><h2>Your feedback</h2></div>
+    <div class="container col-6 p-3" style="text-align: left !important;">
+        <form method="POST" class="form-control" style="background-color: #89cff0">
+            {{ form.hidden_tag() }}
+
+            {{ form.review.label() }}
+            {{ form.review(class="form-control mb-2", placeholder="Review", style="background-color: #89cff0") }}
+
+            {{ form.rating.label() }}
+            {{ form.rating(class="form-control mb-2", placeholder="Rating", style="background-color: #89cff0") }}
+
+            {{ form.submit(class="btn text-white", style="background-color: #0C2340") }}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

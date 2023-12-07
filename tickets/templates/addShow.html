@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Show
+{% endblock %}
+
+{% block content %}
+{% if current_user.is_admin %}
+<div class="text-center">
+    {% if update %}
+        <h2>Update Show</h2>
+    {% else %}
+        <h2>Add Show</h2>
+    {% endif %}
+    <div class="container col-6 p-3" style="text-align: left !important;">
+        <form method="POST" class="form-control" style="background-color: #89cff0">
+            {{ form.hidden_tag() }}
+
+            {{ form.show_name.label() }}
+            {{ form.show_name(class="form-control mb-3", placeholder="Show Name", style="background-color: #89cff0") }}
+
+            {{ form.show_timings.label() }}
+            {{ form.show_timings(class="form-control mb-3", placeholder="Show Timings", style="background-color: #89cff0") }}
+
+            {{ form.rating.label() }}
+            {{ form.rating(class="form-control mb-3", placeholder="Show Rating", style="background-color: #89cff0") }}
+
+            {{ form.ticket_rate.label() }}
+            {{ form.ticket_rate(class="form-control mb-3", placeholder="Ticket Rate", style="background-color: #89cff0") }}
+
+            {{ form.no_of_seats.label() }}
+            {{ form.no_of_seats(class="form-control mb-3", placeholder="No of Seats", style="background-color: #89cff0") }}
+
+            {{ form.img_url.label() }}
+            {{ form.img_url(class="form-control mb-3", placeholder="Poster of the Movie", style="background-color: #89cff0") }}
+
+            {{ form.category.label() }}
+            {{ form.category(class="form-control mb-3", placeholder="Category", style="background-color: #89cff0") }}
+
+            {{ form.lang.label() }}
+            {{ form.lang(class="form-control mb-3", placeholder="Language", style="background-color: #89cff0") }}
+
+            {{ form.submit(class="btn mt-3 text-white", style="background-color: #0C2340;") }}
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="text-center">
+    <h6 class="text-white">This page is only accessible by admin, Please revert back to home page</h6>
+    <a href={{url_for('dashBoard_page')}} class="btn text-white" style="background-color: #0C2340">Back to Home</a>
+</div>
+{% endif %}
+{% endblock %}

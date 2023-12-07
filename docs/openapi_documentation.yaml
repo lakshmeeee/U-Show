@@ -1,0 +1,701 @@
+openapi: 3.0.3
+info:
+  title: U-Show
+  description: >-
+    This is the movie ticket booking application which allwos users book tickets
+    with ease as the admins post them.
+  version: 1.0.0
+servers:
+  - url: /
+tags:
+  - name: General
+    description: User and Admin
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /dashboard:
+    post:
+      tags:
+        - General
+      summary: Show dashboard
+      description: This can only be done after user or admin logs in.
+      operationId: show-dashboard
+      responses:
+        default:
+          description: successful operation
+  /register:
+    post:
+      tags:
+        - General
+      summary: Register
+      description: Both user and admin can register
+      operationId: register
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: email_address
+          in: query
+          description: Email of the user
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+        - name: isAdmin
+          in: query
+          description: Check if admin or user
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid username/password/email supplied
+  /login:
+    get:
+      tags:
+        - General
+      summary: Logs user and admin into the system
+      description: ''
+      operationId: login
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid username/password supplied
+  /logout:
+    get:
+      tags:
+        - General
+      summary: Logs out current logged in user or admin session
+      description: ''
+      operationId: logout
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /add-venue:
+    post:
+      tags:
+        - General
+      summary: Add a venue
+      description: Only admins can add venues
+      operationId: Addvenue
+      parameters:
+        - name: venue_name
+          in: query
+          description: Venue name
+          required: true
+          schema:
+            type: string
+        - name: venue_address
+          in: query
+          description: Venue address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Venue already exists, Default form errors
+  /venue/{venueId}:
+    get:
+      tags:
+        - General
+      summary: Shows movies in that venue
+      description: Shows recently added movies at the top.
+      operationId: venuePage
+      parameters:
+        - name: venueId
+          in: path
+          description: ID of order that needs to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+  /del/venue/{venueId}:      
+    delete:
+      tags:
+        - General
+      summary: Deletes venue by its Id
+      description: delete a venue
+      operationId: deletevenue
+      parameters:
+        - name: venueId
+          in: path
+          description: ID of the venue that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Venue not found   
+  /update/venue/{venueId}:          
+    post:
+      tags:
+        - General
+      summary: Update a venue
+      description: Update specific venue details (only admin)
+      operationId: updatevenue
+      parameters:
+        - name: venueId
+          in: path
+          description: ID of venue that needs to be updated
+          required: true
+          schema:
+            type: integer
+        - name: venuename
+          in: query
+          description: Name of venue that needs to be updated
+          schema:
+            type: string
+        - name: venueaddress
+          in: query
+          description: Address of the venue that needs to be updated
+          schema:
+            type: string
+      responses:
+        '405':
+          description: Invalid input
+  /add-show:
+    post:
+      tags:
+        - General
+      summary: Add a show
+      description: Only admins can add shows
+      operationId: Addshow
+      parameters:
+        - name: show_name
+          in: query
+          description: Name of the movie
+          required: true
+          schema:
+            type: string
+        - name: show_timings
+          in: query
+          description: Date and time of show separated by comma (Eg Apr 9th, 12:00 p.m.)
+          required: true
+          schema:
+            type: string
+        - name: rating
+          in: query
+          description: Rate the movie /10
+          required: true
+          schema:
+            type: string 
+        - name: ticket_rate
+          in: query
+          description: Price of one seat for the movie
+          required: true
+          schema:
+            type: string   
+        - name: no_of_seats
+          in: query
+          description: Remaining capacity of the show hall
+          required: true
+          schema:
+            type: string
+        - name: img_url
+          in: query
+          description: URL of the poster of the movie(preferably IMDB poster)
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: 2D/3D/IMAX
+          required: true
+          schema:
+            type: string 
+        - name: lang
+          in: query
+          description: language the movie runs in
+          required: true
+          schema:
+            type: string            
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Default form errors 
+  /delete/show/{showname}-{venueid}/{showid2}:  
+    delete:
+      tags:
+        - General
+      summary: Deletes show by its Id
+      description: Deletes a show and returns back to the venue page where the show was present
+      operationId: deleteshow
+      parameters:
+        - name: venueid
+          in: path
+          description: ID of the venue that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: int64
+        - name: showid2
+          in: path
+          description: ID of the venue that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: int64 
+        - name: showname
+          in: path
+          description: ID of the venue that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: int64            
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Show not found 
+  /update/show/{venuename}-{venueid}/{showid}:
+    post:
+      tags:
+        - General
+      summary: Update a show
+      description: Update specific show details (only admin)
+      operationId: updateshow
+      parameters:
+        - name: venuename
+          in: path
+          description: Venue that it has to go back to after updating
+          required: true
+          schema:
+            type: integer
+        - name: venueid
+          in: path
+          description: Id of the venue that it has to go back after updating
+          required: true
+          schema:
+            type: string
+        - name: showid
+          in: path
+          description: Id of the show that has to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '405':
+          description: Invalid input
+  /addGen/{showid}:
+    post:
+      tags:
+        - General
+      summary: Add a set of genres to a show
+      description: Only admins can add genres
+      operationId: Addgenre
+      parameters:
+        - name: showid
+          in: path
+          description: Id of the show to which genre needs to be added
+          required: true
+          schema:
+            type: string
+        - name: action
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: adventure
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: comedy
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: drama
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: fantasy
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: horror
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: musical
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: mystery
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: romance
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: scifi
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: thriller
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: sports
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: western
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: crime
+          in: query
+          required: false
+          schema:
+            type: boolean            
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Default form errors   
+  /bookTikets/{showid}:
+    post:
+      tags:
+        - General
+      summary: Book tickets for a movie
+      description: Enter number of tickets and book
+      operationId: booktickets
+      parameters:
+        - name: showid
+          in: path
+          description: Id of the show for which ticket needs to be booked
+          required: true
+          schema:
+            type: string
+        - name: tickets
+          in: query
+          description: number of tickets
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '405':
+          description: Invalid input
+  /search:
+    get:
+      tags:
+        - General
+      summary: Search for venue and movie
+      description: search for movies using name or genre, for venues using venue name or address
+      operationId: search
+      parameters:
+        - name: showId
+          in: query
+          description: ID of show that needs to be fetched
+          required: false
+          schema:
+            type: integer
+        - name: venueId
+          in: query
+          description: ID of venue that needs to be fetched
+          required: false
+          schema:
+            type: integer 
+        - name: genre
+          in: query
+          description: genre that needs to be fetched
+          required: false
+          schema:
+            type: string              
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: No results  
+  /addReview/{showid}:
+    post:
+      tags:
+        - General
+      summary: Add a review
+      description: Only users can add venues
+      operationId: Addreview
+      parameters:
+        - name: showid
+          in: path
+          description: Id of the show for which review is added
+          required: true
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: Name of the user
+          required: true
+          schema:
+            type: string
+        - name: review
+          in: query
+          description: Your review
+          required: true
+          schema:
+            type: string 
+        - name: rating
+          in: query
+          description: rate the movie out of 10
+          required: true
+          schema:
+            type: number            
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Default form errors
+  /see/reviews/{showId}:
+    get:
+      tags:
+        - General
+      summary: See all reviews
+      description: Returns reviews by all users for a show
+      operationId: seereviews
+      parameters:
+        - name: showId
+          in: path
+          description: Id of the show for which reviews needs to be shown.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+  /bookings:
+    get:
+      tags:
+        - General
+      summary: See all bookings
+      description: Returns all bookings of a user
+      operationId: yourbookings
+      parameters:
+        - name: username
+          in: query
+          description: Name of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: No bookings yet
+  /bookings/cancel/{bid}:
+    delete:
+      tags:
+        - General
+      summary: Cancel a user's booking
+      description: Cancels booking, refunds money to wallet and returns the number of seats available
+      operationId: cancelbooking
+      parameters:
+        - name: bid
+          in: path
+          description: ID of the booking to be cancelled
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Booking not found
+  /profilepage:
+    get:
+      tags:
+        - General
+      summary: shows the profile of user and admin
+      operationId: profile
+      responses:
+        '200':
+          description: successful operation
+          
+components:
+  schemas:
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        showId:
+          type: string
+          example: 1
+        genre:
+          type: string
+          example: action
+        venueId:
+          type: string
+          example: 10
+      xml:
+        name: genre   
+    Reviews:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        show_id:
+          type: string
+          example: 12
+        review:
+          type: string
+          example: A good movie
+        rating:
+          type: string
+          example: 7.9
+        username:
+          type: string
+          example: fehguy
+      xml:
+        name: reviews
+    Tickets:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        show_id:
+          type: string
+          example: 12
+        no_of_tickets:
+          type: string
+          example: 2
+        username:
+          type: string
+          example: fehguy
+      xml:
+        name: tickets
+    Show:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        show_name:
+          type: string
+          example: John Wick 4
+        show_timings:
+          type: string
+          example: 4th Apr, 12:00 p.m.
+        rating:
+          type: string
+          example: 7.8
+        ticket_rate:
+          type: string
+          example: 120
+        at_venue:
+          type: string
+          example: 1
+        no_of_seats:
+          type: string
+          example: 100
+        img_url:
+          type: string
+          example: https://editor.swagger.io/img.jpg  
+        lang:
+          type: string
+          example: English        
+      xml:
+        name: show
+    Venue:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        venue_name:
+          type: string
+          example: AGS Cinemas
+        venue_address:
+          type: string
+          example: Maduravoyal, Chennai
+      xml:
+        name: venue        
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: Sruthi
+        email_address:
+          type: string
+          example: john@email.com
+        password_hash:
+          type: string
+          example: '12345abc@'
+        budget:
+          type: string
+          example: 1000
+        is_Admin:
+          type: boolean
+          example: True
+      xml:
+        name: user

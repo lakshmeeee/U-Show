@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    See Reviews
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center text-white mt-3"><h2>Reviews</h2></div>
+<div class="container text-center d-flex align-items-center justify-content-center flex-wrap">
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="card my-2 mx-2" style="width: 18rem;background-color: #d4af37">
+                <div class="card-body">
+                    <h5 class="card-title">{{review.username}}</h5>
+                    <p class="card-text">{{review.review}}</p>
+                    <p class="card-subtitle mb-2" style="font-weight:bold">{{review.rating}}/10</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-white">No reviews yet</p>
+    {% endif %}
+</div>
+
+{% endblock %}

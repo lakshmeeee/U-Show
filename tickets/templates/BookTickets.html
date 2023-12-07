@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ticket Confirmation
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="text-center text-white mt-3"><h2>Booking Page</h2></div>
+    <div class="container col-6 p-3" style="text-align: left !important;">
+        <form method="POST" class="form-control" style="background-color: #89cff0">
+            {{ form.hidden_tag() }}
+
+            {{ form.tickets.label() }}
+            {{ form.tickets(class="form-control mb-3 mt-1", style="background-color: #89cff0") }}
+
+            {{ form.phone_no.label() }}
+            {{ form.phone_no(class="form-control mb-3 mt-1", style="background-color: #89cff0") }}
+           
+            {{ form.submit(class="btn text-white", style="background-color: #0C2340") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

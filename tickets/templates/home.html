@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center home-image justify-content-center align-items-center">
+    <div class="box">
+        <div class="st-box mt-10">
+            <h1 class="display-1" style="font-weight: bolder; color: #0C2340">U-Show</h1>
+            <p style="color:#0C2340">Your Ticket To Entertainment</p>
+            <a href={{url_for('dashBoard_page')}} class="btn text-white btn-lg" style="background-color: #0C2340">View Shows</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

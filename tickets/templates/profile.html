@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Your Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-center h-100">
+    <div class="card text-center" style="width: auto;">
+      <img src= {{url_for('static',filename='/images/gold.avif')}} class="card-img" alt="gold">
+      <div class="card-img-overlay">
+        <h1 class="card-title">Profile</h1>
+            <h5 class="text-body-secondary mt-3">Username: </h5>
+            <h3>{{current_user.username}}</h3>
+            <h5 class="text-body-secondary mt-3">Email: </h5>
+            <h3>{{current_user.email_address}}</h3>
+            {% if not current_user.is_admin %}
+                <h5 class="text-body-secondary mt-3">Your Wallet: </h5>
+                <h3>{{current_user.budget}}</h3>
+            {% endif %}
+            <a href={{url_for('dashBoard_page')}} class="btn my-1 text-white mt-4" style="background-color: #0C2340;">Back to Home</a>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

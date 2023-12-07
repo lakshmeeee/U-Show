@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Venue
+{% endblock %}
+
+{% block content %}
+
+    {% if current_user.is_admin %}
+        <div class="text-center">
+            {% if venue %}
+                <h2>Update Venue</h2>
+            {% else %}
+                <h2>Add Venue</h2>
+            {% endif %}
+            <div class="container col-6 p-3" style="text-align: left !important;">
+                <form method="POST" class="form-control" style="background-color: #89cff0">
+                    {{ form.hidden_tag() }}
+                    
+                    {% if venue %}
+                        {{ form.username.label() }}
+                        {{ form.username(class="form-control mb-3", placeholder=venue.venue_name, style="background-color: #89cff0") }}
+                    {% else %}
+                        {{ form.username.label() }}
+                        {{ form.username(class="form-control mb-3", placeholder="Venue Name", style="background-color: #89cff0") }}
+                    {% endif %}
+
+                    {% if venue %}
+                        {{ form.venueaddress.label() }}
+                        {{ form.venueaddress(class="form-control mb-3", placeholder=venue.venue_address, style="background-color: #89cff0") }}
+                    {% else %}
+                        {{ form.venueaddress.label() }}
+                        {{ form.venueaddress(class="form-control mb-3", placeholder="Venue Address", style="background-color: #89cff0") }}
+                    {% endif %}
+
+                    {{ form.submit(class="btn text-white mt-3", style="background-color: #0C2340;") }}
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h6>This page is only accessible by admin, Please revert back to home page</h6>
+            <a href={{url_for('dashBoard_page')}} class="btn btn-primary">Back to Home</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

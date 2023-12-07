@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Your Bookings
+{% endblock %}
+
+{% block content %}
+
+<div class="container text-center col-12 rounded mt-5 align-items-center justify-content-center" style="color: white !important;">
+    <h2>Your Bookings</h2>
+    <div class="d-flex align-items-center justify-content-center flex-wrap my-2 mx-2 mt-3">
+        {% if shows %}
+            {% for show in shows %}
+                <div class="card text-start my-2 mx-2" style="width: 18rem;background-color: #d4af37;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ show[1].show_name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ show[1].show_timings }}</h6>
+                        <p class="card-text">No of Tickets: {{show[0].no_of_tickets}}</p>
+                        <a href={{url_for('cancel_booking',bid=show[0].id)}} class="btn btn-danger mt-4">Cancel Booking</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-white">No bookings yet!</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

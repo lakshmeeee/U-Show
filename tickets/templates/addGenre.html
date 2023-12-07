@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Genre
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center text-white mt-3">
+    <h2>Select the Genre</h2>
+    <div class="container col-6 p-3" style="text-align: center; max-width: 400px; !important;">
+        <form method="POST" class="form-control d-flex flex-column mt-3" style="background-color: grey;">
+            {{ form.hidden_tag() }}
+             <div>
+                {{ form.action.label() }}
+                {{ form.action(style="margin-left: 50px;") }}
+             </div>
+             <div>
+                 {{ form.adventure.label() }}
+                 {{ form.adventure(style="margin-left: 22px;") }}
+             </div>
+             <div>
+                 {{ form.comedy.label() }}
+                 {{ form.comedy(style="margin-left: 37px;") }}
+             </div>
+             <div>
+                 {{ form.drama.label() }}
+                 {{ form.drama(style="margin-left: 49px;") }}
+             </div>
+             <div>
+                {{ form.fantasy.label() }}
+                {{ form.fantasy(style="margin-left: 43px;") }}
+             </div>
+             <div>
+                {{ form.horror.label() }}
+                {{ form.horror(style="margin-left: 49px;") }}
+             </div>
+             <div>
+                {{ form.musical.label() }}
+                {{ form.musical(style="margin-left: 42px;") }}
+             </div>
+             <div>
+                {{ form.mystery.label() }}
+                {{ form.mystery(style="margin-left: 40px;") }}
+             </div>
+             <div>
+                {{ form.romance.label() }}
+                {{ form.romance(style="margin-left: 30px;") }}
+             </div>
+             <div>
+                {{ form.scifi.label() }}
+                {{ form.scifi(style="margin-left: 58px;") }}
+             </div>
+             <div>
+                {{ form.thriller.label() }}
+                {{ form.thriller(style="margin-left: 47px;") }}
+             </div>
+             <div>
+                {{ form.sports.label() }}
+                {{ form.sports(style="margin-left: 51px;") }}
+             </div>
+             <div>
+                {{ form.western.label() }}
+                {{ form.western(style="margin-left: 38px;") }}
+             </div>
+             <div>
+                {{ form.crime.label() }}
+                {{ form.crime(style="margin-left: 54px;") }}
+             </div>
+            {{ form.submit(class="btn my-2 text-white", style="background-color: #0C2340")}}
+        </form>
+    </div>
+</div>
+
+{% endblock %}
